@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio360 - Premium Pricing</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Outfit:wght@300;400;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            /* Slate 900 */
+            --bg-card: #1e293b;
+            /* Slate 800 */
+            --primary: #3b82f6;
+            /* Blue 500 */
+            --primary-glow: rgba(59, 130, 246, 0.4);
+            --accent: #f59e0b;
+            /* Amber 500 */
+            --accent-glow: rgba(245, 158, 11, 0.2);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', 'Hind Siliguri', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Container & Header */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header-section h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .header-section p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Tabs UI */
+        .tabs-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 50px;
+            background: rgba(30, 41, 59, 0.5);
+            padding: 10px;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-btn {
+            background: transparent;
+            color: var(--text-muted);
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 20px var(--primary-glow);
+        }
+
+        /* Content Area */
+        .tab-content {
+            display: none;
+            animation: fadeScale 0.5s ease-out forwards;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeScale {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.98);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Sub-category Header */
+        .sub-category-title {
+            width: 100%;
+            text-align: center;
+            font-size: 1.8rem;
+            color: #fff;
+            margin: 40px 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .sub-category-title::before,
+        .sub-category-title::after {
+            content: "";
+            height: 1px;
+            width: 60px;
+            background: var(--border-color);
+        }
+
+        /* Grid Layout */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 30px;
+        }
+
+        /* Card UI */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: var(--transition);
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), #c084fc);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px var(--primary-glow);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .package-name {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            gap: 5px;
+        }
+
+        .price span {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        /* Features List */
+        .features {
+            list-style: none;
+            margin-bottom: auto;
+            /* Pushes everything else down */
+            flex-grow: 1;
+        }
+
+        .features li {
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 15px;
+            color: #cbd5e1;
+            font-size: 1.05rem;
+        }
+
+        .features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 22px;
+            height: 22px;
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Addon Box */
+        .addon-box {
+            background: var(--accent-glow);
+            border: 1px dashed var(--accent);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 25px;
+            font-size: 0.95rem;
+            color: #fbbf24;
+        }
+
+        .addon-box strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #fcd34d;
+            font-size: 1rem;
+        }
+
+        /* Action Button */
+        .btn {
+            margin-top: 30px;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .card:hover .btn {
+            background: var(--primary);
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-section h1 {
+                font-size: 2.2rem;
+            }
+
+            .tabs-wrapper {
+                border-radius: 20px;
+                padding: 15px;
+            }
+
+            .tab-btn {
+                width: 100%;
+                text-align: center;
+                border-radius: 10px;
+            }
+
+            .price {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="header-section">
+            <h1>Studio360 Pricing Plans</h1>
+            <p>আপনার প্রোডাকশনের জন্য সেরা এবং সবচেয়ে সাশ্রয়ী প্যাকেজটি নির্বাচন করুন।</p>
+        </div>
+
+        <div class="tabs-wrapper">
+            <button class="tab-btn active" onclick="openTab(event, 'rent')">Studio Rent</button>
+            <button class="tab-btn" onclick="openTab(event, 'product')">Product Shoot</button>
+            <button class="tab-btn" onclick="openTab(event, 'event')">Event Photography</button>
+            <button class="tab-btn" onclick="openTab(event, 'wedding')">Wedding Photography</button>
+            <button class="tab-btn" onclick="openTab(event, 'video')">Videography</button>
+            <button class="tab-btn" onclick="openTab(event, 'agency')">Agency</button>
+        </div>
+
+        <div id="rent" class="tab-content active">
+            <div class="pricing-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Basic</div>
+                        <div class="price">3,500 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>3 Hour shift (7AM-10AM / 10AM-1PM / 3PM-6PM / 6PM-9PM)</li>
+                        <li>3 Photo Light</li>
+                        <li>1 Lightman</li>
+                        <li>Makeup Room Access</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Video Light = 1500 BDT<br>
+                        Additional per Hour = 1000 BDT (with Video Light)
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Standard</div>
+                        <div class="price">7,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>6 Hour shift (10AM-4PM / 4PM-10PM)</li>
+                        <li>3 Photo Light & 2 Video Light</li>
+                        <li>1 Lightman</li>
+                        <li>Makeup Room Access</li>
+                        <li>Any One Props May Use</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Additional per Hour = 1500 BDT
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+
+                <div class="card" style="border-color: var(--primary);">
+                    <div class="card-header">
+                        <div class="package-name" style="color: var(--primary);">Premium</div>
+                        <div class="price">18,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>12 Hour shift (10AM-10PM)</li>
+                        <li>3 Photo Light & 3 Video Light</li>
+                        <li>1 Lightman</li>
+                        <li>Makeup Room Access</li>
+                        <li>2 Props & Green Screen</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Additional per Hour = 1500 BDT
+                    </div>
+                    <button class="btn" style="background: var(--primary); border-color: var(--primary);">Book
+                        Now</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="product" class="tab-content">
+            <h2 class="sub-category-title">Clothing (Without Props)</h2>
+            <div class="pricing-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Tier 1</div>
+                        <div class="price">5,500 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>5-10 Unique Product</li>
+                        <li>Professional Photoshoot</li>
+                        <li>High-end Photo Retouch</li>
+                    </ul>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Tier 2</div>
+                        <div class="price">9,500 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>15-20 Unique Product</li>
+                        <li>Professional Photoshoot</li>
+                        <li>High-end Photo Retouch</li>
+                    </ul>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Tier 3</div>
+                        <div class="price">15,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>5-10 Unique Product</li>
+                        <li>Photoshoot & Photo Retouch</li>
+                        <li>Videography Included</li>
+                        <li>Reels with promo edit</li>
+                    </ul>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Tier 4</div>
+                        <div class="price">25,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>15-20 Unique Product</li>
+                        <li>Photoshoot & Photo Retouch</li>
+                        <li>Videography Included</li>
+                        <li>Reels with promo edit</li>
+                    </ul>
+                    <button class="btn">Book Now</button>
+                </div>
+            </div>
+
+            <h2 class="sub-category-title">Food Shoot</h2>
+            <div class="pricing-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Tier 1 (5 Foods)</div>
+                        <div class="price">5,500 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>5 Unique Foods</li>
+                        <li>Without props: 5500 BDT</li>
+                        <li>With props: 8500 BDT</li>
+                    </ul>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Tier 2 (15 Foods)</div>
+                        <div class="price">10,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>15 Unique Products</li>
+                        <li>Without props: 10000 BDT</li>
+                        <li>With props & Back elements: 15000 BDT</li>
+                    </ul>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Tier 3 (5 Foods + Video)</div>
+                        <div class="price">12,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>5 Unique Products + Video/Reels</li>
+                        <li>Without props: 12000 BDT</li>
+                        <li>With props & Back elements: 16000 BDT</li>
+                    </ul>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Tier 4 (15 Foods + Video)</div>
+                        <div class="price">18,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>15 Unique Products + Video/Reels</li>
+                        <li>Without props: 18000 BDT</li>
+                        <li>With props & Back elements: 22000 BDT</li>
+                    </ul>
+                    <button class="btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="event" class="tab-content">
+            <div class="pricing-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Basic</div>
+                        <div class="price">25,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>Daylong Coverage</li>
+                        <li>1 Photographer</li>
+                        <li>1 Videographer</li>
+                        <li>Unlimited Photo with Color Grading (Output)</li>
+                    </ul>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Standard</div>
+                        <div class="price">35,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>Daylong Coverage</li>
+                        <li>2 Photographer</li>
+                        <li>1 Cinematographer</li>
+                        <li>Unlimited Photo with Color Grading</li>
+                    </ul>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Premium</div>
+                        <div class="price">50,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>Daylong Coverage</li>
+                        <li>2 Photographer & 2 Cinematographer</li>
+                        <li>Art Director</li>
+                        <li>1 Drone with Pilot</li>
+                        <li>Unlimited Photo with Color Grading</li>
+                    </ul>
+                    <button class="btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="wedding" class="tab-content">
+            <div class="pricing-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Basic</div>
+                        <div class="price">12,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>5 Hr Coverage</li>
+                        <li>1 Photographer</li>
+                        <li>1 Videographer</li>
+                        <li>Unlimited Photo with Color Grading</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Per Hour = 1500 BDT
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Standard</div>
+                        <div class="price">20,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>5 Hr Coverage</li>
+                        <li>2 Photographer</li>
+                        <li>1 Cinematographer</li>
+                        <li>Unlimited Photo with Color Grading</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Per Hour = 2000 BDT
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Premium</div>
+                        <div class="price">35,000 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>5 Hr Coverage</li>
+                        <li>2 Photographer & 2 Cinematographer</li>
+                        <li>Art Director (5000 BDT added)</li>
+                        <li>1 Drone with Pilot</li>
+                        <li>Unlimited Photo with Color Grading</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Per Hour = 3000 BDT
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="video" class="tab-content">
+            <div class="pricing-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Podcast or Episode</div>
+                        <div class="price">10,500 <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>1 Hr Show</li>
+                        <li>2 Person Setup</li>
+                        <li>Editing Included</li>
+                        <li>Audio Setup</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Per 20 Minutes = 2000 BDT
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Promotion Video</div>
+                        <div class="price">8K-10K <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>30-60 Sec Duration</li>
+                        <li>Shoot & Presenter Included</li>
+                        <li>Professional Editing</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        VoiceOver 30-60 sec = 1500 BDT<br>
+                        VoiceOver 1-2 Min = 2000 BDT
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Reels</div>
+                        <div class="price">3,500+ <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>10-30 Sec: 3500 BDT</li>
+                        <li>30-60 Sec: 5000 BDT</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Model/Presenter = 1500-2000 BDT
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Presentation Video</div>
+                        <div class="price">4.5K+ <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>1-30 Sec: 4500-6500 BDT</li>
+                        <li>30-60 Sec: 5000-8500 BDT</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Model/Presenter = 1500-2000 BDT
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Explainer Video</div>
+                        <div class="price">5.5K+ <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>1-30 Sec: 5500-7500 BDT</li>
+                        <li>30-60 Sec: 5500-9500 BDT</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Model/Presenter = 1500-2000 BDT
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">News Presentation</div>
+                        <div class="price">2.5K+ <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>1-30 Sec: 2500-3000 BDT</li>
+                        <li>30-60 Sec: 3500-4000 BDT</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Model/Presenter = 1000-1500 BDT
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="agency" class="tab-content">
+            <h2 class="sub-category-title">Only Output without Color Grading</h2>
+            <div class="pricing-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Photography</div>
+                        <div class="price">2.5K-8.5K <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>Wedding: 2500-5000 BDT (5 Hr)</li>
+                        <li>Event: 4500-8500 BDT (Daylong)</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Per Hour = 500 BDT
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="package-name">Videography</div>
+                        <div class="price">4K-11K <span>BDT</span></div>
+                    </div>
+                    <ul class="features">
+                        <li>Wedding: 4000-6000 BDT (5 Hr)</li>
+                        <li>Event: 5000-11000 BDT (Daylong)</li>
+                    </ul>
+                    <div class="addon-box">
+                        <strong>Add-ons:</strong>
+                        Per Hour = 500 BDT
+                    </div>
+                    <button class="btn">Book Now</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            // Hide all tab content
+            let i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+
+            // Remove active class from all buttons
+            tablinks = document.getElementsByClassName("tab-btn");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+
+            // Show current tab and add active class to button
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+
+</body>
+
+</html>
