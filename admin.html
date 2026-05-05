@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যাডমিন প্যানেল - এ.আর.কে স্মৃতি পরিষদ</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;700&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>এ.আর.কে <span>অ্যাডমিন</span></h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active" onclick="switchTab('notice-tab')"><i class="fas fa-bullhorn"></i> নোটিশ বোর্ড</li>
+                <li onclick="switchTab('event-tab')"><i class="fas fa-calendar-alt"></i> আসন্ন ইভেন্ট</li>
+                <li><a href="index.html" target="_blank" style="color: inherit; text-decoration: none;"><i
+                            class="fas fa-external-link-alt"></i> মূল ওয়েবসাইট</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <h2>ড্যাশবোর্ড</h2>
+                <div class="user-info">
+                    <span>অ্যাডমিন</span>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </header>
+
+            <!-- Notice Management Section -->
+            <section id="notice-tab" class="content-section active">
+                <div class="section-header">
+                    <h3>নোটিশ ম্যানেজমেন্ট</h3>
+                    <button class="btn-add" onclick="openModal('notice-modal')"><i class="fas fa-plus"></i> নতুন নোটিশ
+                        যোগ করুন</button>
+                </div>
+                <div class="table-container">
+                    <table id="notice-table">
+                        <thead>
+                            <tr>
+                                <th>তারিখ</th>
+                                <th>ক্যাটাগরি</th>
+                                <th>শিরোনাম</th>
+                                <th>অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be loaded here by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Event Management Section -->
+            <section id="event-tab" class="content-section">
+                <div class="section-header">
+                    <h3>ইভেন্ট ম্যানেজমেন্ট</h3>
+                    <button class="btn-add" onclick="openModal('event-modal')"><i class="fas fa-plus"></i> নতুন ইভেন্ট
+                        যোগ করুন</button>
+                </div>
+                <div class="table-container">
+                    <table id="event-table">
+                        <thead>
+                            <tr>
+                                <th>তারিখ</th>
+                                <th>সময়</th>
+                                <th>শিরোনাম</th>
+                                <th>অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be loaded here by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Notice Form Modal -->
+    <div id="notice-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('notice-modal')">&times;</span>
+            <h3 id="notice-modal-title">নতুন নোটিশ যোগ করুন</h3>
+            <form id="notice-form">
+                <input type="hidden" id="notice-id">
+                <div class="form-group">
+                    <label>তারিখ (যেমন: ১৫ মার্চ ২০২৬)</label>
+                    <input type="text" id="notice-date" required>
+                </div>
+                <div class="form-group">
+                    <label>ক্যাটাগরি (যেমন: সাধারণ ঘোষণা)</label>
+                    <input type="text" id="notice-category" required>
+                </div>
+                <div class="form-group">
+                    <label>শিরোনাম</label>
+                    <input type="text" id="notice-title" required>
+                </div>
+                <div class="form-group">
+                    <label>বিস্তারিত বিবরণ</label>
+                    <textarea id="notice-desc" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn-save">সেভ করুন</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Event Form Modal -->
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('event-modal')">&times;</span>
+            <h3 id="event-modal-title">নতুন ইভেন্ট যোগ করুন</h3>
+            <form id="event-form">
+                <input type="hidden" id="event-id">
+                <div class="form-group">
+                    <label>দিন ও মাস (যেমন: ২০ মার্চ)</label>
+                    <input type="text" id="event-date" required>
+                </div>
+                <div class="form-group">
+                    <label>সময় (যেমন: সকাল ৯:০০ টা)</label>
+                    <input type="text" id="event-time" required>
+                </div>
+                <div class="form-group">
+                    <label>স্থান</label>
+                    <input type="text" id="event-location" required>
+                </div>
+                <div class="form-group">
+                    <label>শিরোনাম</label>
+                    <input type="text" id="event-title" required>
+                </div>
+                <div class="form-group">
+                    <label>ইমেজ URL (Unsplash Link)</label>
+                    <input type="url" id="event-img" required>
+                </div>
+                <button type="submit" class="btn-save">সেভ করুন</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>
