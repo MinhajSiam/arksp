@@ -1,3 +1,90 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyChp3WWYLpdtxEuazuiW7O8z65L1bwlIiQ",
+    authDomain: "ark-parishad.firebaseapp.com",
+    projectId: "ark-parishad",
+    storageBucket: "ark-parishad.firebasestorage.app",
+    messagingSenderId: "92118328596",
+    appId: "1:92118328596:web:c79c0bb797194a99e14e01",
+    measurementId: "G-9BWELYFQ79"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// Load Dynamic Data
+document.addEventListener('DOMContentLoaded', async () => {
+
+    // --- Load Notices ---
+    const noticeWrapper = document.getElementById('dynamic-notices');
+    if (noticeWrapper) {
+        try {
+            const querySnapshot = await getDocs(collection(db, "notices"));
+            let noticesHTML = '';
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                noticesHTML += `
+                <div class="premium-notice-item">
+                    <div class="notice-date-box">
+                        <span class="notice-day" style="font-size: 1.2rem;">${data.date}</span>
+                    </div>
+                    <div class="notice-body">
+                        <div class="notice-meta">
+                            <span class="notice-category"><i class="fas fa-bullhorn"></i> ${data.category}</span>
+                        </div>
+                        <h3>${data.title}</h3>
+                        <p>${data.desc}</p>
+                    </div>
+                </div>`;
+            });
+            noticeWrapper.innerHTML = noticesHTML !== '' ? noticesHTML : '<p style="text-align:center;">কোনো নোটিশ পাওয়া যায়নি।</p>';
+        } catch (e) {
+            console.log("Error loading notices", e);
+        }
+    }
+
+    // --- Load Events ---
+    const eventGrid = document.getElementById('dynamic-events');
+    if (eventGrid) {
+        try {
+            const querySnapshot = await getDocs(collection(db, "events"));
+            let eventsHTML = '';
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                // Extracting day and month from "২০ মার্চ" (Assuming format has space)
+                const dateParts = data.date.split(' ');
+                const day = dateParts[0] || '';
+                const month = dateParts[1] || '';
+
+                eventsHTML += `
+                <div class="premium-event-card">
+                    <div class="event-img-box">
+                        <img src="${data.img}" alt="Event">
+                        <div class="event-date-badge">
+                            <span class="day">${day}</span>
+                            <span class="month">${month}</span>
+                        </div>
+                    </div>
+                    <div class="event-content">
+                        <div class="event-meta">
+                            <span><i class="far fa-clock"></i> ${data.time}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> ${data.location}</span>
+                        </div>
+                        <h3>${data.title}</h3>
+                        <a href="#" class="event-btn">যোগদান করুন <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>`;
+            });
+            eventGrid.innerHTML = eventsHTML !== '' ? eventsHTML : '<p style="text-align:center; grid-column:1/-1;">কোনো আসন্ন ইভেন্ট নেই।</p>';
+        } catch (e) {
+            console.log("Error loading events", e);
+        }
+    }
+
+    // ... (আপনার আগের হ্যামবার্গার ও ইন্টারসেকশন অবজার্ভার কোডগুলো এখানে থাকবে) ...
+});
 document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Mobile Hamburger Menu Toggle

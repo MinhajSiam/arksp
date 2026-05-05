@@ -1,84 +1,129 @@
-// Initialize empty arrays if local storage is empty
-let notices = JSON.parse(localStorage.getItem('ark_notices')) || [];
-let events = JSON.parse(localStorage.getItem('ark_events')) || [];
+// ১. Firebase App, Analytics এবং Firestore Import
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-analytics.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+
+// ২. Firebase Configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyChp3WWYLpdtxEuazuiW7O8z65L1bwlIiQ",
+    authDomain: "ark-parishad.firebaseapp.com",
+    projectId: "ark-parishad",
+    storageBucket: "ark-parishad.firebasestorage.app",
+    messagingSenderId: "92118328596",
+    appId: "1:92118328596:web:c79c0bb797194a99e14e01",
+    measurementId: "G-9BWELYFQ79"
+};
+
+// ৩. Initialize Firebase & Firestore
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app); // এই লাইনটি খুবই গুরুত্বপূর্ণ
+
+// Collection References
+const noticesCol = collection(db, "notices");
+const eventsCol = collection(db, "events");
+
+// Local array for editing data
+let localNotices = [];
+let localEvents = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    renderNotices();
-    renderEvents();
+    loadNotices();
+    loadEvents();
 });
 
-// Tab Switching Logic
-function switchTab(tabId) {
-    document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
-    document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
-
-    document.getElementById(tabId).classList.add('active');
-    event.currentTarget.classList.add('active');
+// ==========================================
+// UI, Modal & Mobile Sidebar Functions
+// ==========================================
+window.toggleSidebar = function () {
+    document.querySelector('.sidebar').classList.toggle('active');
 }
 
-// Modal Logic
-function openModal(modalId) {
+window.switchTab = function (tabId) {
+    document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+    document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+
+    // Auto-close sidebar on mobile
+    if (window.innerWidth <= 768) {
+        document.querySelector('.sidebar').classList.remove('active');
+    }
+}
+
+window.openModal = function (modalId) {
     document.getElementById(modalId).style.display = 'block';
-    // Clear forms when opening
     if (modalId === 'notice-modal') document.getElementById('notice-form').reset();
     if (modalId === 'event-modal') document.getElementById('event-form').reset();
-
     document.getElementById(modalId + '-title').innerText = "নতুন এন্ট্রি যোগ করুন";
     document.getElementById(modalId.split('-')[0] + '-id').value = '';
 }
 
-function closeModal(modalId) {
+window.closeModal = function (modalId) {
     document.getElementById(modalId).style.display = 'none';
 }
 
 // ==========================================
-// NOTICE CRUD OPERATIONS
+// NOTICES: CRUD Operations
 // ==========================================
-document.getElementById('notice-form').addEventListener('submit', function (e) {
+document.getElementById('notice-form').addEventListener('submit', async function (e) {
     e.preventDefault();
     const id = document.getElementById('notice-id').value;
-    const notice = {
-        id: id ? id : Date.now().toString(),
+    const noticeData = {
         date: document.getElementById('notice-date').value,
         category: document.getElementById('notice-category').value,
         title: document.getElementById('notice-title').value,
-        desc: document.getElementById('notice-desc').value
+        desc: document.getElementById('notice-desc').value,
+        timestamp: new Date() // For sorting
     };
 
-    if (id) {
-        // Update
-        const index = notices.findIndex(n => n.id === id);
-        notices[index] = notice;
-    } else {
-        // Add
-        notices.unshift(notice); // Add to top
+    try {
+        if (id) {
+            await updateDoc(doc(db, "notices", id), noticeData);
+        } else {
+            await addDoc(noticesCol, noticeData);
+        }
+        closeModal('notice-modal');
+        loadNotices();
+    } catch (error) {
+        console.error("Error saving notice: ", error);
+        alert("নোটিশ সেভ করতে সমস্যা হয়েছে!");
     }
-
-    localStorage.setItem('ark_notices', JSON.stringify(notices));
-    closeModal('notice-modal');
-    renderNotices();
 });
 
-function renderNotices() {
+async function loadNotices() {
     const tbody = document.querySelector('#notice-table tbody');
-    tbody.innerHTML = '';
-    notices.forEach(notice => {
-        tbody.innerHTML += `
-            <tr>
-                <td>${notice.date}</td>
-                <td><span style="background:#eee; padding:3px 8px; border-radius:5px; font-size:0.9rem;">${notice.category}</span></td>
-                <td><strong>${notice.title}</strong></td>
-                <td class="action-btns">
-                    <button class="btn-edit" onclick="editNotice('${notice.id}')"><i class="fas fa-edit"></i></button>
-                    <button class="btn-delete" onclick="deleteNotice('${notice.id}')"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>
-        `;
-    });
+    tbody.innerHTML = '<tr><td colspan="4">লোড হচ্ছে...</td></tr>';
+
+    try {
+        const querySnapshot = await getDocs(noticesCol);
+        tbody.innerHTML = '';
+        localNotices = []; // Reset local array
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            data.id = doc.id; // Save Firebase ID
+            localNotices.push(data);
+
+            tbody.innerHTML += `
+                <tr>
+                    <td>${data.date}</td>
+                    <td><span style="background:#eee; padding:3px 8px; border-radius:5px; font-size:0.9rem;">${data.category}</span></td>
+                    <td><strong>${data.title}</strong></td>
+                    <td class="action-btns">
+                        <button class="btn-edit" onclick="editNotice('${doc.id}')" style="background:#3498db; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer; margin-right:5px;"><i class="fas fa-edit"></i></button>
+                        <button class="btn-delete" onclick="deleteNotice('${doc.id}')" style="background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+        });
+    } catch (error) {
+        console.error("Error loading notices: ", error);
+    }
 }
 
-function editNotice(id) {
-    const notice = notices.find(n => n.id === id);
+window.editNotice = function (id) {
+    const notice = localNotices.find(n => n.id === id);
     document.getElementById('notice-id').value = notice.id;
     document.getElementById('notice-date').value = notice.date;
     document.getElementById('notice-category').value = notice.category;
@@ -89,61 +134,75 @@ function editNotice(id) {
     document.getElementById('notice-modal').style.display = 'block';
 }
 
-function deleteNotice(id) {
+window.deleteNotice = async function (id) {
     if (confirm('আপনি কি নিশ্চিত যে এই নোটিশটি মুছে ফেলতে চান?')) {
-        notices = notices.filter(n => n.id !== id);
-        localStorage.setItem('ark_notices', JSON.stringify(notices));
-        renderNotices();
+        await deleteDoc(doc(db, "notices", id));
+        loadNotices();
     }
 }
 
 // ==========================================
-// EVENT CRUD OPERATIONS
+// EVENTS: CRUD Operations
 // ==========================================
-document.getElementById('event-form').addEventListener('submit', function (e) {
+document.getElementById('event-form').addEventListener('submit', async function (e) {
     e.preventDefault();
     const id = document.getElementById('event-id').value;
-    const eventObj = {
-        id: id ? id : Date.now().toString(),
+    const eventData = {
         date: document.getElementById('event-date').value,
         time: document.getElementById('event-time').value,
         location: document.getElementById('event-location').value,
         title: document.getElementById('event-title').value,
-        img: document.getElementById('event-img').value
+        img: document.getElementById('event-img').value,
+        timestamp: new Date()
     };
 
-    if (id) {
-        const index = events.findIndex(ev => ev.id === id);
-        events[index] = eventObj;
-    } else {
-        events.unshift(eventObj);
+    try {
+        if (id) {
+            await updateDoc(doc(db, "events", id), eventData);
+        } else {
+            await addDoc(eventsCol, eventData);
+        }
+        closeModal('event-modal');
+        loadEvents();
+    } catch (error) {
+        console.error("Error saving event: ", error);
+        alert("ইভেন্ট সেভ করতে সমস্যা হয়েছে!");
     }
-
-    localStorage.setItem('ark_events', JSON.stringify(events));
-    closeModal('event-modal');
-    renderEvents();
 });
 
-function renderEvents() {
+async function loadEvents() {
     const tbody = document.querySelector('#event-table tbody');
-    tbody.innerHTML = '';
-    events.forEach(ev => {
-        tbody.innerHTML += `
-            <tr>
-                <td>${ev.date}</td>
-                <td>${ev.time}</td>
-                <td><strong>${ev.title}</strong></td>
-                <td class="action-btns">
-                    <button class="btn-edit" onclick="editEvent('${ev.id}')"><i class="fas fa-edit"></i></button>
-                    <button class="btn-delete" onclick="deleteEvent('${ev.id}')"><i class="fas fa-trash"></i></button>
-                </td>
-            </tr>
-        `;
-    });
+    tbody.innerHTML = '<tr><td colspan="4">লোড হচ্ছে...</td></tr>';
+
+    try {
+        const querySnapshot = await getDocs(eventsCol);
+        tbody.innerHTML = '';
+        localEvents = []; // Reset local array
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            data.id = doc.id; // Save Firebase ID
+            localEvents.push(data);
+
+            tbody.innerHTML += `
+                <tr>
+                    <td>${data.date}</td>
+                    <td>${data.time}</td>
+                    <td><strong>${data.title}</strong></td>
+                    <td class="action-btns">
+                        <button class="btn-edit" onclick="editEvent('${doc.id}')" style="background:#3498db; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer; margin-right:5px;"><i class="fas fa-edit"></i></button>
+                        <button class="btn-delete" onclick="deleteEvent('${doc.id}')" style="background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+        });
+    } catch (error) {
+        console.error("Error loading events: ", error);
+    }
 }
 
-function editEvent(id) {
-    const ev = events.find(e => e.id === id);
+window.editEvent = function (id) {
+    const ev = localEvents.find(e => e.id === id);
     document.getElementById('event-id').value = ev.id;
     document.getElementById('event-date').value = ev.date;
     document.getElementById('event-time').value = ev.time;
@@ -155,10 +214,9 @@ function editEvent(id) {
     document.getElementById('event-modal').style.display = 'block';
 }
 
-function deleteEvent(id) {
+window.deleteEvent = async function (id) {
     if (confirm('আপনি কি নিশ্চিত যে এই ইভেন্টটি মুছে ফেলতে চান?')) {
-        events = events.filter(e => e.id !== id);
-        localStorage.setItem('ark_events', JSON.stringify(events));
-        renderEvents();
+        await deleteDoc(doc(db, "events", id));
+        loadEvents();
     }
 }

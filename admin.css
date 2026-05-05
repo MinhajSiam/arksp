@@ -244,3 +244,87 @@ tbody tr:hover {
 .btn-save:hover {
     background: var(--secondary-color);
 }
+
+/* =========================================
+   Mobile Responsiveness (Admin Panel)
+   ========================================= */
+.top-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+
+    /* Show Hamburger Menu */
+    .menu-toggle {
+        display: block;
+    }
+
+    /* Mobile Sidebar */
+    .sidebar {
+        position: fixed;
+        left: -260px;
+        /* Hide sidebar initially */
+        top: 0;
+        height: 100vh;
+        z-index: 9999;
+        transition: 0.3s ease-in-out;
+        box-shadow: 2px 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .sidebar.active {
+        left: 0;
+        /* Show sidebar when active */
+    }
+
+    /* Content Area Adjustments */
+    .main-content {
+        width: 100%;
+    }
+
+    .top-bar {
+        padding: 15px 20px;
+    }
+
+    .content-section {
+        padding: 20px 15px;
+    }
+
+    .section-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .btn-add {
+        width: 100%;
+        /* Make add buttons full width on mobile */
+    }
+
+    /* Table Responsiveness (Horizontal Scroll) */
+    .table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 8px;
+    }
+
+    table {
+        min-width: 650px;
+        /* Forces table to scroll instead of crushing data */
+    }
+
+    /* Modal Mobile Fix */
+    .modal-content {
+        width: 95%;
+        margin: 10% auto;
+        padding: 20px;
+    }
+}

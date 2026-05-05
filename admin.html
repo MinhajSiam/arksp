@@ -31,7 +31,12 @@
         <!-- Main Content -->
         <main class="main-content">
             <header class="top-bar">
-                <h2>ড্যাশবোর্ড</h2>
+                <div class="top-bar-left">
+                    <div class="menu-toggle" onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <h2>ড্যাশবোর্ড</h2>
+                </div>
                 <div class="user-info">
                     <span>অ্যাডমিন</span>
                     <i class="fas fa-user-circle"></i>
@@ -148,7 +153,9 @@
         </div>
     </div>
 
-    <script src="admin.js"></script>
+
+    <script type="module" src="admin.js"></script>
+</body>
 </body>
 
 </html>
