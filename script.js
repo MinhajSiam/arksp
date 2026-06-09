@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyChp3WWYLpdtxEuazuiW7O8z65L1bwlIiQ",
@@ -147,4 +147,57 @@ document.addEventListener('DOMContentLoaded', () => {
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
     animatedElements.forEach(el => observer.observe(el));
 
+});
+
+// ==========================================
+// Join Us Form Modal Logic
+// ==========================================
+
+// Attach functions to window object so HTML inline onclick can access them
+window.openJoinModal = function () {
+    document.getElementById('join-modal').style.display = 'block';
+}
+
+window.closeJoinModal = function () {
+    document.getElementById('join-modal').style.display = 'none';
+}
+
+// Close modal when clicked outside
+window.addEventListener('click', function (event) {
+    const modal = document.getElementById('join-modal');
+    if (event.target === modal) {
+        closeJoinModal();
+    }
+});
+
+// Handle Form Submission
+document.getElementById('join-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const submitBtn = this.querySelector('button[type="submit"]');
+    submitBtn.innerText = "অপেক্ষা করুন...";
+    submitBtn.disabled = true;
+
+    const memberData = {
+        name: document.getElementById('join-name').value,
+        phone: document.getElementById('join-phone').value,
+        address: document.getElementById('join-address').value,
+        bloodGroup: document.getElementById('join-blood').value,
+        appliedAt: new Date()
+    };
+
+    try {
+        // Save to Firebase 'members' collection
+        await addDoc(collection(db, "members"), memberData);
+
+        alert("ধন্যবাদ! আপনার আবেদন সফলভাবে জমা হয়েছে। আমাদের প্রতিনিধি দ্রুত আপনার সাথে যোগাযোগ করবে।");
+        this.reset();
+        closeJoinModal();
+    } catch (error) {
+        console.error("Error submitting form: ", error);
+        alert("দুঃখিত, কোনো একটি সমস্যা হয়েছে। দয়া করে আবার চেষ্টা করুন।");
+    } finally {
+        submitBtn.innerText = "আবেদন জমা দিন";
+        submitBtn.disabled = false;
+    }
 });

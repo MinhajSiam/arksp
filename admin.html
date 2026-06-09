@@ -23,6 +23,7 @@
             <ul class="sidebar-menu">
                 <li class="active" onclick="switchTab('notice-tab')"><i class="fas fa-bullhorn"></i> নোটিশ বোর্ড</li>
                 <li onclick="switchTab('event-tab')"><i class="fas fa-calendar-alt"></i> আসন্ন ইভেন্ট</li>
+                <li onclick="switchTab('member-tab')"><i class="fas fa-users"></i> সদস্য তালিকা</li>
                 <li><a href="index.html" target="_blank" style="color: inherit; text-decoration: none;"><i
                             class="fas fa-external-link-alt"></i> মূল ওয়েবসাইট</a></li>
             </ul>
@@ -86,6 +87,27 @@
                         </thead>
                         <tbody>
                             <!-- Data will be loaded here by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section id="member-tab" class="content-section">
+                <div class="section-header">
+                    <h3>নতুন সদস্যদের আবেদন</h3>
+                </div>
+                <div class="table-container">
+                    <table id="member-table">
+                        <thead>
+                            <tr>
+                                <th>নাম</th>
+                                <th>মোবাইল নম্বর</th>
+                                <th>ঠিকানা</th>
+                                <th>রক্তের গ্রুপ</th>
+                                <th>আবেদনের তারিখ</th>
+                                <th>অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody>
                         </tbody>
                     </table>
                 </div>

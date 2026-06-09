@@ -22,6 +22,7 @@ const db = getFirestore(app); // এই লাইনটি খুবই গু�
 // Collection References
 const noticesCol = collection(db, "notices");
 const eventsCol = collection(db, "events");
+const membersCol = collection(db, "members");
 
 // Local array for editing data
 let localNotices = [];
@@ -30,6 +31,7 @@ let localEvents = [];
 document.addEventListener('DOMContentLoaded', () => {
     loadNotices();
     loadEvents();
+    loadMembers();
 });
 
 // ==========================================
@@ -218,5 +220,57 @@ window.deleteEvent = async function (id) {
     if (confirm('আপনি কি নিশ্চিত যে এই ইভেন্টটি মুছে ফেলতে চান?')) {
         await deleteDoc(doc(db, "events", id));
         loadEvents();
+    }
+}
+
+// ==========================================
+// MEMBERS: Fetch & Delete Operations
+// ==========================================
+async function loadMembers() {
+    const tbody = document.querySelector('#member-table tbody');
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">লোড হচ্ছে...</td></tr>';
+
+    try {
+        const querySnapshot = await getDocs(membersCol);
+        tbody.innerHTML = '';
+
+        if (querySnapshot.empty) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">কোনো নতুন আবেদন পাওয়া যায়নি।</td></tr>';
+            return;
+        }
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+
+            // Timestamp কে সাধারণ তারিখে কনভার্ট করা
+            let dateString = "-";
+            if (data.appliedAt) {
+                const dateObj = data.appliedAt.toDate();
+                dateString = dateObj.toLocaleDateString('bn-BD'); // বাংলা ফরম্যাটে তারিখ
+            }
+
+            tbody.innerHTML += `
+                <tr>
+                    <td><strong>${data.name}</strong></td>
+                    <td><a href="tel:${data.phone}" style="color:var(--primary-color); text-decoration:none;">${data.phone}</a></td>
+                    <td>${data.address}</td>
+                    <td><span style="color:#e74c3c; font-weight:bold;">${data.bloodGroup || '-'}</span></td>
+                    <td>${dateString}</td>
+                    <td class="action-btns">
+                        <button class="btn-delete" onclick="deleteMember('${doc.id}')" style="background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer;"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            `;
+        });
+    } catch (error) {
+        console.error("Error loading members: ", error);
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">ডাটা লোড করতে সমস্যা হয়েছে!</td></tr>';
+    }
+}
+
+window.deleteMember = async function (id) {
+    if (confirm('আপনি কি নিশ্চিত যে এই আবেদনটি মুছে ফেলতে চান?')) {
+        await deleteDoc(doc(db, "members", id));
+        loadMembers(); // মুছে ফেলার পর টেবিল আপডেট করা
     }
 }

@@ -86,9 +86,9 @@
                     <strong class="highlight-orange">সন্ত্রাস ও চাঁদাবাজ মুক্ত</strong> দেশ গড়াই এই সংগঠনের অঙ্গীকার।
                 </p>
                 <div class="hero-cta-group">
-                    <a href="#footer" class="btn-primary hero-btn">
+                    <button onclick="openJoinModal()" class="btn-primary hero-btn">
                         আমাদের সাথে যোগ দিন <i class="fas fa-arrow-right"></i>
-                    </a>
+                    </button>
                 </div>
             </div>
             <!-- Premium Glassmorphism Floating Cards for Right Side -->
@@ -555,6 +555,45 @@
             </div>
         </div>
     </footer>
+
+    <div id="join-modal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="custom-close" onclick="closeJoinModal()">&times;</span>
+            <h3>সদস্যপদ ফর্ম</h3>
+            <p>সংগঠনে যুক্ত হতে নিচের ফর্মটি সঠিক তথ্য দিয়ে পূরণ করুন</p>
+
+            <form id="join-form">
+                <div class="form-group">
+                    <label>আপনার নাম</label>
+                    <input type="text" id="join-name" placeholder="আপনার পুরো নাম" required>
+                </div>
+                <div class="form-group">
+                    <label>মোবাইল নম্বর</label>
+                    <input type="tel" id="join-phone" placeholder="যেমন: 017XXXXXXX" required>
+                </div>
+                <div class="form-group">
+                    <label>ঠিকানা</label>
+                    <input type="text" id="join-address" placeholder="আপনার বর্তমান ঠিকানা" required>
+                </div>
+                <div class="form-group">
+                    <label>রক্তের গ্রুপ (ঐচ্ছিক)</label>
+                    <select id="join-blood">
+                        <option value="">নির্বাচন করুন</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; border-radius: 8px;">আবেদন জমা
+                    দিন</button>
+            </form>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
