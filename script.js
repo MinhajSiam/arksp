@@ -180,8 +180,12 @@ document.getElementById('join-form').addEventListener('submit', async function (
 
     const memberData = {
         name: document.getElementById('join-name').value,
+        fname: document.getElementById('join-fname').value, // নতুন
+        dob: document.getElementById('join-dob').value, // নতুন
+        nid: document.getElementById('join-nid').value, // নতুন
         phone: document.getElementById('join-phone').value,
-        address: document.getElementById('join-address').value,
+        presentAddress: document.getElementById('join-present-address').value, // আপডেট করা হয়েছে
+        permanentAddress: document.getElementById('join-permanent-address').value, // নতুন
         bloodGroup: document.getElementById('join-blood').value,
         appliedAt: new Date()
     };

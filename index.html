@@ -551,10 +551,11 @@
     </footer>
 
     <div id="join-modal" class="custom-modal">
-        <div class="custom-modal-content">
+        <!-- added max-height and overflow-y for scrolling capability -->
+        <div class="custom-modal-content" style="max-height: 85vh; overflow-y: auto;">
             <span class="custom-close" onclick="closeJoinModal()">&times;</span>
             <h3>সদস্যপদ ফর্ম</h3>
-            <p>সংগঠনে যুক্ত হতে নিচের ফর্মটি সঠিক তথ্য দিয়ে পূরণ করুন</p>
+            <p>সংগঠনে যুক্ত হতে নিচের ফর্মটি সঠিক তথ্য দিয়ে পূরণ করুন</p>
 
             <form id="join-form">
                 <div class="form-group">
@@ -562,12 +563,28 @@
                     <input type="text" id="join-name" placeholder="আপনার পুরো নাম" required>
                 </div>
                 <div class="form-group">
+                    <label>বাবার নাম</label>
+                    <input type="text" id="join-fname" placeholder="বাবার পুরো নাম" required>
+                </div>
+                <div class="form-group">
+                    <label>জন্ম তারিখ</label>
+                    <input type="date" id="join-dob" required>
+                </div>
+                <div class="form-group">
+                    <label>জাতীয় পরিচয় পত্র নাম্বার</label>
+                    <input type="number" id="join-nid" placeholder="NID বা স্মার্ট কার্ড নাম্বার" required>
+                </div>
+                <div class="form-group">
                     <label>মোবাইল নম্বর</label>
                     <input type="tel" id="join-phone" placeholder="যেমন: 017XXXXXXX" required>
                 </div>
                 <div class="form-group">
-                    <label>ঠিকানা</label>
-                    <input type="text" id="join-address" placeholder="আপনার বর্তমান ঠিকানা" required>
+                    <label>বর্তমান ঠিকানা</label>
+                    <input type="text" id="join-present-address" placeholder="আপনার বর্তমান ঠিকানা" required>
+                </div>
+                <div class="form-group">
+                    <label>স্থায়ী ঠিকানা</label>
+                    <input type="text" id="join-permanent-address" placeholder="আপনার স্থায়ী ঠিকানা" required>
                 </div>
                 <div class="form-group">
                     <label>রক্তের গ্রুপ (ঐচ্ছিক)</label>
