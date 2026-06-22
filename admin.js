@@ -2,6 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-analytics.js";
 import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
 // ২. Firebase Configuration
 const firebaseConfig = {
@@ -18,6 +19,29 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getFirestore(app); // এই লাইনটি খুবই গুরুত্বপূর্ণ
+const auth = getAuth(app);
+
+// চেক করা হচ্ছে অ্যাডমিন লগ-ইন করা আছে কি না! না থাকলে login.html এ পাঠিয়ে দেবে।
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.replace("login.html");
+    } else {
+        // ইউজার লগ-ইন থাকলে ডাটা লোড হবে
+        document.body.style.display = "block"; // বডি ভিজিবল করা
+        loadNotices();
+        loadEvents();
+        loadMembers();
+    }
+});
+
+// লগ-আউট ফাংশন
+window.logoutAdmin = function () {
+    signOut(auth).then(() => {
+        window.location.replace("login.html");
+    }).catch((error) => {
+        console.error("Logout Error", error);
+    });
+}
 
 // Collection References
 const noticesCol = collection(db, "notices");

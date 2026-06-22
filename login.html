@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যাডমিন লগ-ইন - এ.আর.কে স্মৃতি পরিষদ</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;700&family=Poppins:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0A5C36;
+            --secondary-color: #F39C12;
+            --bg-light: #F4F7F6;
+            --white: #FFFFFF;
+            --font-bengali: 'Noto Sans Bengali', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-bengali);
+            background: linear-gradient(135deg, rgba(10, 92, 54, 0.9), rgba(0, 0, 0, 0.9)), url('https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1920&q=80') center/cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .login-card h2 {
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            font-size: 1.8rem;
+        }
+
+        .login-card p {
+            color: #777;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover {
+            background: var(--secondary-color);
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+        <h2>অ্যাডমিন প্যানেল</h2>
+        <p>লগ-ইন করতে আপনার ইমেইল ও পাসওয়ার্ড দিন</p>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label>ইমেইল ঠিকানা</label>
+                <input type="email" id="admin-email" placeholder="admin@arksp.org" required>
+            </div>
+            <div class="form-group">
+                <label>পাসওয়ার্ড</label>
+                <input type="password" id="admin-password" placeholder="********" required>
+            </div>
+            <button type="submit" class="btn-login" id="login-btn">লগ-ইন করুন</button>
+            <p id="error-msg" class="error-message">ইমেইল বা পাসওয়ার্ড ভুল হয়েছে!</p>
+        </form>
+    </div>
+
+    <script type="module" src="login.js"></script>
+</body>
+
+</html>
