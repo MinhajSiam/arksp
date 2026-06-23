@@ -111,12 +111,12 @@
 
     <div class="login-card">
         <h2>অ্যাডমিন প্যানেল</h2>
-        <p>লগ-ইন করতে আপনার ইমেইল ও পাসওয়ার্ড দিন</p>
+        <p id="form-subtitle">লগ-ইন করতে আপনার ইমেইল ও পাসওয়ার্ড দিন</p>
 
         <form id="login-form">
             <div class="form-group">
                 <label>ইমেইল ঠিকানা</label>
-                <input type="email" id="admin-email" placeholder="admin@arksp.org" required>
+                <input type="email" id="admin-email" placeholder="email address" required>
             </div>
             <div class="form-group">
                 <label>পাসওয়ার্ড</label>
@@ -124,6 +124,26 @@
             </div>
             <button type="submit" class="btn-login" id="login-btn">লগ-ইন করুন</button>
             <p id="error-msg" class="error-message">ইমেইল বা পাসওয়ার্ড ভুল হয়েছে!</p>
+
+            <div style="margin-top: 15px;">
+                <a href="#" id="show-reset-btn"
+                    style="color: var(--primary-color); font-size: 0.95rem; text-decoration: none; font-weight: 600;">পাসওয়ার্ড
+                    ভুলে গেছেন?</a>
+            </div>
+        </form>
+
+        <form id="reset-form" style="display: none;">
+            <div class="form-group">
+                <label>আপনার অ্যাকাউন্টের ইমেইল ঠিকানা দিন</label>
+                <input type="email" id="reset-email" placeholder="admin@arksp.org" required>
+            </div>
+            <button type="submit" class="btn-login" id="reset-btn">রিসেট লিংক পাঠান</button>
+            <p id="reset-msg" style="font-size: 0.95rem; margin-top: 15px; display: none; font-weight: 500;"></p>
+
+            <div style="margin-top: 20px;">
+                <a href="#" id="back-to-login-btn" style="color: #777; font-size: 0.95rem; text-decoration: none;"><i
+                        class="fas fa-arrow-left"></i> লগ-ইন পেজে ফিরে যান</a>
+            </div>
         </form>
     </div>
 
