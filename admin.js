@@ -276,10 +276,12 @@ async function loadMembers() {
             tbody.innerHTML += `
                 <tr>
                     <td><strong>${data.name}</strong></td>
+                    <td>${data.fname || '-'}</td>
                     <td><a href="tel:${data.phone}" style="color:var(--primary-color); text-decoration:none;">${data.phone}</a></td>
-                    <td>${data.address}</td>
+                    <td>${data.dob || '-'}</td>
+                    <td>${data.nid || '-'}</td>
+                    <td>${data.presentAddress || '-'}</td>
                     <td><span style="color:#e74c3c; font-weight:bold;">${data.bloodGroup || '-'}</span></td>
-                    <td>${dateString}</td>
                     <td class="action-btns">
                         <button class="btn-delete" onclick="deleteMember('${doc.id}')" style="background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer;"><i class="fas fa-trash"></i></button>
                     </td>
