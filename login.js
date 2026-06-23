@@ -2,14 +2,15 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-auth.js";
 
-// ২. আপনার Firebase Config বসান
+// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyChp3WWYLpdtxEuazuiW7O8z65L1bwlIiQ",
     authDomain: "ark-parishad.firebaseapp.com",
     projectId: "ark-parishad",
     storageBucket: "ark-parishad.firebasestorage.app",
     messagingSenderId: "92118328596",
-    appId: "1:92118328596:web:c79c0bb797194a99e14e01"
+    appId: "1:92118328596:web:c79c0bb797194a99e14e01",
+    measurementId: "G-9BWELYFQ79"
 };
 
 const app = initializeApp(firebaseConfig);
